@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Phototèque de chatons version BDD{% endblock %}
+
+{% block body %}
+    <h1>Phototèque de chatons version BDD</h1>
+    <p>Voici la liste des catégories :</p>
+    <ul>
+        {% for categorie in categories %}
+            <li><a href="{{ path('app_categories_show', {'id': categorie.id}) }}">{{ categorie.Titre }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

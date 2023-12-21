@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ categorie.Titre }}{% endblock %}
+
+{% block body %}
+    <h1>{{ categorie.Titre }}</h1>
+    <p>{{ categorie.Description }}</p>
+
+    {% if categorie.chatons|length > 0 %}
+        <div class="row">
+            {% for chaton in categorie.chatons %}
+                <div class="col-md-4 mb-3">
+                    <div class="card card-custom" style="max-width: 300px;">
+                        <img src="{{ asset('uploads/' ~ chaton.Photo) }}" class="card-img-top" alt="{{ chaton.Nom }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ chaton.Nom }}</h5>
+                            <!-- Boutons pour modifier et supprimer un chaton -->
+                            <a href="{{ path('app_chatons_edit', {'id': chaton.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+                            <a href="{{ path('app_chatons_delete', {'id': chaton.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+                            <span id="nb_like_{{ chaton.id }}">{{ chaton.nblike }}</span>
+                            <!-- Bouton pour liker un chaton -->
+                            <a href="#" data-id="{{ chaton.id }}" class="btn btn-sm btn-success like">Like</a>
+                            <!-- Bouton pour déliker un chaton -->
+                            <a href="#" data-id="{{ chaton.id }}" class="btn btn-sm btn-warning unlike">Unlike</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucun chaton trouvé dans cette catégorie.</p>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            $(".like").click(function(){
+                let id = $(this).data("id");
+                let url = "{{ path('app_chatons_like', {'id':"XX"}) }}";
+                url = url.replace("XX", id);
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $("#nb_like_" + id).html(data.nb_like);
+                    }
+                });
+            });
+            <!--Unlike qui ne peut pas déscendre en dessous de zero-->
+            $(".unlike").click(function () {
+                let id = $(this).data("id");
+                let url = "{{ path('app_chatons_unlike', {'id':"XX"}) }}";
+                url = url.replace("XX", id);
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#nb_like_" + id).html(data.nb_like);
+                    },
+                    error: function (error) {
+                        console.log("Error: " + JSON.stringify(error));
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock %}

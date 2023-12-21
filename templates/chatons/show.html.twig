@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chaton{% endblock %}
+
+{% block body %}
+    <h1>Chaton</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ chaton.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ chaton.Nom }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td>{{ chaton.Photo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-dark" href="{{ path('app_chatons_index') }}">Back to list</a>
+
+    <a class="btn btn-dark" href="{{ path('app_chatons_edit', {'id': chaton.id}) }}">Edit</a>
+    <br><br>
+    {{ include('chatons/_delete_form.html.twig') }}
+{% endblock %}

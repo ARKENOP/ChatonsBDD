@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Chaton{% endblock %}
+
+{% block body %}
+    <h1>Create new Chaton</h1>
+
+    {{ include('chatons/_form.html.twig') }}
+    <br>
+    <a class="btn btn-dark" href="{{ path('app_chatons_index') }}">Back to list</a>
+{% endblock %}
